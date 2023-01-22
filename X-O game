@@ -1,0 +1,96 @@
+#include <iostream>
+#include <stdlib.h>
+#include <iomanip>
+#include <windows.h>
+using namespace std;
+char matrix[10][10];
+int x, y;
+bool result = false;
+
+bool win();
+void displayboard(){
+    system("cls");
+    
+    for (int j = 0; j < 10; j++){
+    cout << "----------------------------------------------------------------------------------------------------"<< endl;
+     for (int i = 0; i <= 10; i++){
+     if (i < 10){
+         cout <<setw(5) << left << "|";
+         if((matrix[j][i]=='X') || (matrix[j][i]=='O') || matrix[j][i]) cout << setw(5) <<matrix[j][i];
+         else cout << setw(5) << "\0";
+     }
+     else cout <<setw(5) << left << "|" ;
+     }
+     cout << endl;
+    }
+    cout << "-----------------------------------------------------------------------------------------------------"<< endl;
+}
+void player1(){
+        cout << "player 1 enter coordinate: ";
+        do{
+            cin >> x >> y;
+            if ((x <= 0) || (x >= 10) || (y <= 0) || (y >= 10) || (matrix[x][y] != '\0')) cout << "player 1 enter coordinate again: ";
+        } while( (x <= 0) || (x >= 10) || (y <= 0) || (y >= 10) || (matrix[x][y] != '\0'));
+        matrix[x][y] = 'X';
+        Sleep(500);
+        displayboard();
+}
+
+void player2(){
+        cout << "player 2 enter coordinate: ";
+        do{
+            cin >> x >> y;
+            if ((x <= 0) || (x >= 10) || (y <= 0) || (y >= 10) || (matrix[x][y] != '\0')) cout << "player 2 enter coordinate again: ";
+        } while( (x <= 0) || (x >= 10) || (y <= 0) || (y >= 10) || (matrix[x][y] != '\0'));
+        matrix[x][y] = 'O';
+        Sleep(500);
+        displayboard();
+}
+
+bool win(){
+    int count1 = 0, count2 = 0, count3 = 0, count4 = 0;
+for (int i = -4; i < 5; i++){
+    if(matrix[x+i][y+i] != matrix[x][y]){
+        count1 = 0;
+    } else count1++;
+    if(matrix[x][y+i] != matrix[x][y]){
+        count2 = 0;
+    } else count2++;
+    if(matrix[x+i][y] != matrix[x][y]){
+        count3 = 0;
+    } else count3++;
+    if(matrix[x+i][y-i] != matrix[x][y]){
+        count4 = 0;
+    } else count4++;
+    if ((count1 == 5) || (count2 == 5) || (count3 ==5) || (count4 == 5)){
+    return true;
+    }
+}
+return false;
+}
+int main(){
+    for (int i=0;i<10;i++){
+        for (int j = 0; j < 11; j++){
+            matrix[i][j] = '\0';
+        }
+    }
+    for(int i = 1; i < 10; i++){
+        matrix[0][i] = char( i + 48 );
+        matrix[i][0] = char( i + 48 );
+    } 
+
+    displayboard();
+    while (1){
+        player1();
+        if(win()){
+            cout << "player1 win!";
+            break;
+        }
+        player2();
+        if(win()) {
+            cout << "player2 win!";
+            break;
+        }
+    }
+    return 0;
+}
